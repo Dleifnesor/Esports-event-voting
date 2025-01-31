@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<!-- saved from url=(0043)file:///C:/Users/firet/Downloads/index.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Ideas Voting</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #1E1E2F; /* Dark Blue Background */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #D1D1D1; /* Light text color for contrast */
+        }
+
+        .container {
+            background-image: url('champ.png');
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px;
+            width: 80%;
+            max-width: 1000px;
+            padding: 40px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+            opacity: 0.9;
+            background-color: rgba(0, 0, 0, 0.7); /* Darker background with some opacity */
+        }
+
+        h1 {
+            color: #98D700; /* Lime Green */
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+        }
+
+        .input-container,
+        .vote-container {
+            margin-bottom: 20px;
+        }
+
+        .input-container input,
+        .input-container button,
+        .vote-container button {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            margin-top: 10px;
+            width: 100%;
+            font-size: 18px;
+        }
+
+        .input-container input {
+            border: 2px solid #98D700;
+            background-color: #333; /* Darker background for input */
+            color: #D1D1D1; /* Light text for input */
+            box-sizing: border-box;
+        }
+
+        .input-container button {
+            background-color: #98D700; /* Lime Green */
+            color: white;
+            cursor: pointer;
+        }
+
+        .input-container button:hover {
+            background-color: #81b600; /* Darker lime green on hover */
+        }
+
+        .vote-container button {
+            background-color: #98D700; /* Lime Green */
+            color: white;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .vote-container button:hover {
+            background-color: #81b600; /* Darker lime green on hover */
+        }
+
+        .idea-item {
+            display: flex;
+            justify-content: space-between;
+            background-color: #333; /* Darker background for idea items */
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .idea-item button {
+            background-color: #98D700; /* Lime Green */
+            color: white;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .idea-item button:hover {
+            background-color: #81b600; /* Darker lime green on hover */
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 14px;
+            color: #999; /* Lighter text for footer */
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Champlain College Event Ideas</h1>
+        
+        <div class="input-container">
+            <input type="text" id="ideaInput" placeholder="Enter your event idea...">
+            <button onclick="submitIdea()">Submit Idea</button>
+        </div>
+
+        <div class="vote-container">
+            <h3>Vote for an Idea:</h3>
+            <div id="ideaList"><div class="idea-item">
+                    <span>rivals of aether losers tournament</span>
+                    <div>
+                        <button onclick="vote(0)">Vote</button>
+                        <span>Votes: 1</span>
+                    </div>
+                </div><div class="idea-item">
+                    <span>draft tournament for smash</span>
+                    <div>
+                        <button onclick="vote(1)">Vote</button>
+                        <span>Votes: 3</span>
+                    </div>
+                </div><div class="idea-item">
+                    <span>Jackbox party pack</span>
+                    <div>
+                        <button onclick="vote(2)">Vote</button>
+                        <span>Votes: 7</span>
+                    </div>
+                </div></div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Champlain College 2025 | Powered by Student Ideas</p>
+    </div>
+
+    <script>
+        let ideas = JSON.parse(localStorage.getItem('ideas')) || [];
+        let votes = JSON.parse(localStorage.getItem('votes')) || [];
+
+        function submitIdea() {
+            const ideaInput = document.getElementById("ideaInput");
+            const newIdea = ideaInput.value.trim();
+            
+            if (newIdea) {
+                ideas.push(newIdea);
+                votes.push(0); // initialize votes for the new idea
+                ideaInput.value = ""; // clear the input
+                saveData();
+                renderIdeas();
+            }
+        }
+
+        function renderIdeas() {
+            const ideaList = document.getElementById("ideaList");
+            ideaList.innerHTML = ""; // clear current list
+
+            ideas.forEach((idea, index) => {
+                const ideaItem = document.createElement("div");
+                ideaItem.classList.add("idea-item");
+
+                ideaItem.innerHTML = `
+                    <span>${idea}</span>
+                    <div>
+                        <button onclick="vote(${index})">Vote</button>
+                        <span>Votes: ${votes[index]}</span>
+                    </div>
+                `;
+                
+                ideaList.appendChild(ideaItem);
+            });
+        }
+
+        function vote(index) {
+            votes[index]++;
+            saveData();
+            renderIdeas();
+        }
+
+        function saveData() {
+            localStorage.setItem('ideas', JSON.stringify(ideas));
+            localStorage.setItem('votes', JSON.stringify(votes));
+        }
+
+        // Render ideas on page load
+        renderIdeas();
+    </script>
+
+
+
+</body></html>
